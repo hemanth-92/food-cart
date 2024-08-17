@@ -1,4 +1,5 @@
 import React from "react";
+import { lOGO_URl } from "../utils/constant";
 
 export default function Header() {
   return (
@@ -7,7 +8,7 @@ export default function Header() {
         <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
           <img
             className="w-14"
-            src="https://image.similarpng.com/very-thumbnail/2021/09/Good-food-logo-design-on-transparent-background-PNG.png"
+            src={lOGO_URl}
             alt="img logo"
           />
           <div>
