@@ -1,30 +1,11 @@
-import Header from './components/Header';
-import RestaurantCard from './components/Restaurant-card';
+import Header from './components/Header'
+import Body from './components/Body'
 
 export default function App() {
   return (
     <div className="mx-auto w-full">
       <Header />
-      <div className="flex w-full">
-        <div className="w-30 h-30 flex flex-wrap">
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-        </div>
-      </div>
+      <Body />
     </div>
-  );
+  )
 }
