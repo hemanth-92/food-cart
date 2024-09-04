@@ -1,42 +1,45 @@
-import { useEffect, useState } from 'react'
-import RestaurantCard from './RestaurantCard'
+import { useEffect, useState } from "react";
+import RestaurantCard from "./RestaurantCard";
 
 export const Body = () => {
-  const [listOfRestaurants, setListOfRestaurants] = useState([])
-  const [search, setSearch] = useState('')
-  const [filteredRes, setFilteredRes] = useState([])
+  const [listOfRestaurants, setListOfRestaurants] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredRes, setFilteredRes] = useState([]);
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.413339&lng=78.4603535&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
-    );
+    try {
+      const response = await fetch("https://jsonifyyy.com/restros", {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+        },
+      });
 
-    const json = await data.json()
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-    setListOfRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants,
-    )
-    setFilteredRes(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants,
-    )
-    // console.log(
-    //   json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-    //     ?.restaurants,
-    // )
+      const json = await response.json();
+      console.log(json);
+
+      const restaurants = json?.data;
+      //console.log(restaurants);
+
+      setListOfRestaurants(restaurants);
+      setFilteredRes(restaurants);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Display loading while data is being fetched
+  if (!listOfRestaurants || listOfRestaurants.length === 0) {
+    return <h1>Loading...</h1>;
   }
-  // console.log(listOfRestaurants.length)
-  // console.log(filteredRes.length);
-
-
-if (!listOfRestaurants || listOfRestaurants.length === 0) {
-  return <h1>Loading...</h1>;
-}
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -49,7 +52,7 @@ if (!listOfRestaurants || listOfRestaurants.length === 0) {
         >
           Top Rated Restaurant
         </button>
-        <div>
+        <div className="flex gap-4">
           <input
             className="border-2 bg-inherit"
             type="text"
@@ -59,7 +62,6 @@ if (!listOfRestaurants || listOfRestaurants.length === 0) {
             }}
           />
           <button
-            className="gap-2"
             onClick={() => {
               const filteredRes = listOfRestaurants.filter((res) =>
                 res.info.name.toLowerCase().includes(search.toLowerCase()),
@@ -73,13 +75,13 @@ if (!listOfRestaurants || listOfRestaurants.length === 0) {
       </div>
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-2">
         <div className="grid w-full max-w-screen-2xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
-          {filteredRes.map((restaurants) => (
-            <RestaurantCard key={restaurants.info.id} resData={restaurants} />
+          {filteredRes.map((restaurant) => (
+            <RestaurantCard key={restaurant._id} resData={restaurant} />
           ))}
         </div>
-      </div> 
+      </div>
     </div>
   );
-}
+};
 
-export default Body
+export default Body;
