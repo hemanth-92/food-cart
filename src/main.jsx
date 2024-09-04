@@ -5,22 +5,27 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import About from "./components/About.jsx"
+import About from "./components/About.jsx";
+import Body from "./components/Body.jsx";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <Error />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-    errorElement: <Error />,
-  },
-  {
-    path: "/about",
-    element: <About />,
+    children: [
+      {
+        path: "/",
+        element: <Body />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+    ],
     errorElement: <Error />,
   },
 ]);
