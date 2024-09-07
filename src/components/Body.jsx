@@ -24,7 +24,7 @@ export const Body = () => {
       }
 
       const json = await response.json();
-      console.log(json);
+      //console.log(json);
 
       const restaurants = json?.data;
       //console.log(restaurants);
