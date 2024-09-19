@@ -1,6 +1,6 @@
 import { ChevronUp, AlertTriangle } from "lucide-react";
 
-const MenuItem = () => {
+export const MenuItem = () => {
   return (
     <div className="rounded-lg bg-white p-4 shadow-md">
       <div className="mb-4 flex items-center justify-between">
@@ -31,7 +31,7 @@ const MenuItem = () => {
           <button className="rounded border border-green-500 bg-white px-4 py-1 font-medium text-green-500">
             ADD
           </button>
-          <span className="mt-1 text-sm text-gray-500">Customisable</span>
+          <span className="mt-1 text-sm text-gray-500">Customizable</span>
         </div>
       </div>
     </div>

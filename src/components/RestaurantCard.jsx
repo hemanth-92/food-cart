@@ -1,20 +1,22 @@
 import { Star, Timer } from "lucide-react";
+// import PropTypes from "prop-types";
 
 const RestaurantCard = (props) => {
-  const { resData } = props;
-  //console.log(resData);
+  const { resData} = props;
+  console.log("This is res ", resData);
 
-  const { imageUrl, name, avgRating, cuisines, veg, deliveryTime } =
-    resData?.info;
+const { imageUrl, name, avgRating, cuisines, veg, deliveryTime } =
+  resData?.info || {};
+
 
   return (
-    <div className="flex w-64 flex-col rounded-lg bg-white p-4 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+    <div className="flex h-96 w-64 flex-col rounded-lg bg-white p-4 shadow-lg transition-shadow duration-300 hover:shadow-xl">
       <img
-        className="h-60 w-full rounded-t-lg object-cover"
+        className="h-40 w-full rounded-t-lg object-cover"
         alt="restaurant-logo"
         src={imageUrl}
       />
-      <div className="flex flex-col p-4">
+      <div className="flex flex-grow flex-col p-4">
         <h3 className="mb-1 text-lg font-semibold">{name}</h3>
         <p className="mb-2 text-sm text-gray-600">{cuisines.join(", ")}</p>
         <div className="mb-2 flex items-center justify-between">
