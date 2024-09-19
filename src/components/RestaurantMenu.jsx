@@ -1,26 +1,57 @@
 import { useState, useEffect } from "react";
-import { Star, ChevronUp, AlertTriangle } from "lucide-react";
+import { Star } from "lucide-react";
+import { MenuItem } from "./MenuItem";
+import { useParams } from "react-router-dom";
+import Shimmer from "./Shimmer";
 
 const RestaurantMenu = () => {
   const [resInfo, setResInfo] = useState(null);
+  const [error, setError] = useState(null);
+  const { resId } = useParams();
+
   useEffect(() => {
-    fetchMenu();
-  }, []);
-  const fetchMenu = async () => {
-    const response = await fetch("https://jsonifyyy.com/restros");
-    const json = await response.json();
-    //console.log(json);
-    // console.log(menu);
-    const resMenu = json?.data?.menu;
-    setResInfo(resMenu);
-    const { name, price, veg } = resMenu;
+    // Fetch data whenever resId changes
+    if (resId) {
+      fetchMenu(resId);
+    }
+  }, [resId]);
+
+  const fetchMenu = async (id) => {
+    try {
+      const response = await fetch(`https://jsonifyyy.com/restros/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch menu");
+      }
+      const json = await response.json();
+      const resMenu = json?.data[0]?.menu;
+
+      // Check if the menu exists
+      if (resMenu) {
+        setResInfo(resMenu);
+      } else {
+        setError("No menu available for this restaurant.");
+      }
+    } catch (error) {
+      console.error("Error fetching menu:", error);
+      setError(error.message);
+    }
   };
+
+  // If there's an error, display an error message
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  // If resInfo is null, return a loading state
+  if (!resInfo) {
+    return <Shimmer />;
+  }
+
+  const { name, price, veg, category, imageUrl, description } = resInfo;
 
   return (
     <div className="mx-auto w-full max-w-md rounded-lg bg-white p-4 shadow-md">
-      <h2 className="text-xl font-bold text-gray-900">
-        Shah Ghouse Hotel & Restaurant
-      </h2>
+      <h2 className="text-xl font-bold text-gray-900">{name}</h2>
       <div className="mt-2 flex items-center text-sm text-gray-600">
         <span className="flex items-center font-semibold text-green-600">
           <Star />
@@ -28,37 +59,18 @@ const RestaurantMenu = () => {
         </span>
         <span className="ml-2">(61K+ ratings)</span>
         <span className="mx-2">•</span>
-        <span>₹350 for two</span>
+        <span>{price}</span>
       </div>
       <div className="mt-2 text-sm">
         <a href="#" className="font-medium text-orange-500 hover:underline">
-          Biryani
-        </a>
-        ,
-        <a href="#" className="font-medium text-orange-500 hover:underline">
-          Chinese
+          {category || "Category"}
         </a>
       </div>
       <div className="mt-2 text-sm text-gray-600">
         <div className="flex items-center">
-          <span>Outlet</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="ml-1 h-5 w-5 text-red-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-          <span className="ml-1 text-gray-800">Banjara Hills</span>
+          <span>{veg ? "Veg" : "Non-Veg"}</span>
         </div>
-        <div className="mt-1">20-25 mins</div>
+        <div className="mt-1">{description || "No description available."}</div>
       </div>
       <div className="mt-4 flex items-center justify-between border-t pt-4 text-sm text-gray-600">
         <div className="flex items-center">
@@ -80,7 +92,14 @@ const RestaurantMenu = () => {
         </div>
         <div>₹39 Delivery fee will apply</div>
       </div>
+      <div>
+        {/* Dynamically render menu items here */}
+        {resInfo.items?.map((item, index) => (
+          <MenuItem key={index} {...item} />
+        ))}
+      </div>
     </div>
   );
 };
+
 export default RestaurantMenu;

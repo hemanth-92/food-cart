@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
+import { Link } from "react-router-dom";
+import Shimmer from "./Shimmer";
 
 export const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -24,7 +26,7 @@ export const Body = () => {
       }
 
       const json = await response.json();
-      //console.log(json);
+      console.log(json);
 
       const restaurants = json?.data;
       //console.log(restaurants);
@@ -38,7 +40,7 @@ export const Body = () => {
 
   // Display loading while data is being fetched
   if (!listOfRestaurants || listOfRestaurants.length === 0) {
-    return <h1>Loading...</h1>;
+    return <Shimmer />;
   }
 
   return (
@@ -76,7 +78,9 @@ export const Body = () => {
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-2">
         <div className="grid w-full max-w-screen-2xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
           {filteredRes.map((restaurant) => (
-            <RestaurantCard key={restaurant._id} resData={restaurant} />
+            <Link key={restaurant._id} to={"/resmenu" + restaurant._id}>
+              <RestaurantCard resData={restaurant} />
+            </Link>
           ))}
         </div>
       </div>
