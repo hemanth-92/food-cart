@@ -1,13 +1,11 @@
 import { Star, Timer } from "lucide-react";
-// import PropTypes from "prop-types";
 
 const RestaurantCard = (props) => {
-  const { resData} = props;
+  const { resData } = props;
   console.log("This is res ", resData);
 
-const { imageUrl, name, avgRating, cuisines, veg, deliveryTime } =
-  resData?.info || {};
-
+  const { imageUrl, name, avgRating, cuisines, veg, deliveryTime } =
+    resData?.info || {};
 
   return (
     <div className="flex h-96 w-64 flex-col rounded-lg bg-white p-4 shadow-lg transition-shadow duration-300 hover:shadow-xl">
