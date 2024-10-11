@@ -1,46 +1,10 @@
-import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { MenuItem } from "./MenuItem";
-import { useParams } from "react-router-dom";
+import { MenuItems } from "./MenuItems";
 import Shimmer from "./Shimmer";
+import useRestaurantMenu from "../utils/useRestarauntMenu";
 
 const RestaurantMenu = () => {
-  const [resInfo, setResInfo] = useState(null);
-  const [error, setError] = useState(null);
-  const { resId } = useParams();
-
-  useEffect(() => {
-    // Fetch data whenever resId changes
-    if (resId) {
-      fetchMenu(resId);
-    }
-  }, [resId]);
-
-  const fetchMenu = async (id) => {
-    try {
-      const response = await fetch(`https://jsonifyyy.com/restros/${id}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch menu");
-      }
-      const json = await response.json();
-      const resMenu = json?.data[0]?.menu;
-
-      // Check if the menu exists
-      if (resMenu) {
-        setResInfo(resMenu);
-      } else {
-        setError("No menu available for this restaurant.");
-      }
-    } catch (error) {
-      console.error("Error fetching menu:", error);
-      setError(error.message);
-    }
-  };
-
-  // If there's an error, display an error message
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const { resInfo } = useRestaurantMenu(resId);
 
   // If resInfo is null, return a loading state
   if (!resInfo) {
@@ -95,7 +59,7 @@ const RestaurantMenu = () => {
       <div>
         {/* Dynamically render menu items here */}
         {resInfo.items?.map((item, index) => (
-          <MenuItem key={index} {...item} />
+          <MenuItems key={index} {...item} />
         ))}
       </div>
     </div>

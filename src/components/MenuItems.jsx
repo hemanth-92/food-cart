@@ -1,13 +1,12 @@
 import { ChevronUp, AlertTriangle } from "lucide-react";
 
-export const MenuItem = () => {
+export const MenuItems = () => {
   return (
     <div className="rounded-lg bg-white p-4 shadow-md">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Recommended (3)</h2>
         <ChevronUp className="h-5 w-5 text-gray-500" />
       </div>
-
       <div className="flex items-start justify-between">
         <div className="flex-grow">
           <div className="mb-1 flex items-center">
@@ -38,4 +37,5 @@ export const MenuItem = () => {
   );
 };
 
-export default MenuItem;
+export default MenuItems;
+
